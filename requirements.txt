@@ -4,3 +4,9 @@ plotly
 jupyter
 tensorflow[and-cuda]
 pandas
+
+opencv-python
+ultralytics
+torch
+torchvision
+torchaudio --index-url https://download.pytorch.org/whl/cu121
