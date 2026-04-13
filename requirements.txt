@@ -4,9 +4,10 @@ plotly
 jupyter
 tensorflow[and-cuda]
 pandas
+seaborn
 
-opencv-python
-ultralytics
-torch
-torchvision
-torchaudio --index-url https://download.pytorch.org/whl/cu121
+# opencv-python
+# ultralytics
+# torch
+# torchvision
+# torchaudio --index-url https://download.pytorch.org/whl/cu121
