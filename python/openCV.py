@@ -45,25 +45,33 @@ cv2.destroyAllWindows()
 import cv2
 import os
 from ultralytics import YOLO
+import argparse
 
 # Fix untuk environment Linux/Wayland & RTSP TCP
 os.environ["QT_QPA_PLATFORM"] = "xcb"
 os.environ["OPENCV_FFMPEG_CAPTURE_OPTIONS"] = "rtsp_transport;tcp"
 
 def main():
+    parser = argparse.ArgumentParser(description="YOLOv8 Detection with Camera or CCTV")
+    parser.add_argument("--source", choices=["camera", "cctv"], required=True, help="Pilih sumber: camera atau cctv")
+    args = parser.parse_args()
+
     # 1. Load Model (Akan mendownload otomatis saat pertama kali dijalankan)
     model = YOLO("yolov8n.pt") 
 
-    # 2. Setup Koneksi RTSP
-    rtsp_url = "rtsp://admin:123456@192.168.1.3:554/chID=5&streamType=sub"
-    cap = cv2.VideoCapture(rtsp_url, cv2.CAP_FFMPEG)
-    cap.set(cv2.CAP_PROP_BUFFERSIZE, 1)
+    # 2. Setup Koneksi berdasarkan source
+    if args.source == "camera":
+        cap = cv2.VideoCapture(0)  # Kamera laptop
+    elif args.source == "cctv":
+        rtsp_url = "rtsp://admin:123456@192.168.1.3:554/chID=5&streamType=sub"
+        cap = cv2.VideoCapture(rtsp_url, cv2.CAP_FFMPEG)
+        cap.set(cv2.CAP_PROP_BUFFERSIZE, 1)
 
     if not cap.isOpened():
-        print("Gagal koneksi ke DVR.")
+        print("Gagal koneksi ke sumber video.")
         return
 
-    print("Model loaded & RTSP Connected. Jalankan deteksi...")
+    print("Model loaded & Video Connected. Jalankan deteksi...")
 
     while True:
         ret, frame = cap.read()
@@ -78,7 +86,7 @@ def main():
         annotated_frame = results[0].plot()
 
         # Tampilkan hasil
-        cv2.imshow("YOLOv8 RTSP Detection", annotated_frame)
+        cv2.imshow("YOLOv8 Detection", annotated_frame)
 
         if cv2.waitKey(1) & 0xFF == ord('q'):
             break
@@ -88,4 +96,3 @@ def main():
 
 if __name__ == "__main__":
     main()
->>>>>>> 9f8dfe8cf76aa60aa9c3be99d71618f9ead6c1e5
