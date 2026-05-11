@@ -11,3 +11,4 @@ videos/
 food41/
 input/
 dataset
+*.pth
