@@ -12,3 +12,6 @@ food41/
 input/
 dataset
 *.pth
+data/
+yolov5
+Kuis_Emotion_Classification/
